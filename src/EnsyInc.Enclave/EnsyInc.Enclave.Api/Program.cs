@@ -23,17 +23,3 @@ finally
     LogManager.Shutdown();
 }
 
-//builder.Configuration.add
-//builder.Services.AddControllers();
-//builder.Services.AddOpenApi()
-//    .AddEndpointsApiExplorer()
-//    .AddSwaggerGen();
-
-//app.MapOpenApi();
-//app.UseSwagger()
-//    .UseSwaggerUI();
-//app.UseHttpsRedirection()
-//    .UseAuthorization();
-//app.MapControllers();
-
-//return;

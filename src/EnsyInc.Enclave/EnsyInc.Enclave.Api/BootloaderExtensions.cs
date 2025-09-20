@@ -9,6 +9,7 @@ internal static class BootloaderExtensions
     {
         builder.Configuration.InitializeConfiguration(builder.Environment.EnvironmentName);
         builder.Logging.ConfigureLogging();
+        builder.Services.AddDefaultServices();
         
         return builder;
     }
@@ -32,8 +33,28 @@ internal static class BootloaderExtensions
         LogManager.Setup().LoadConfigurationFromFile("nlog.config");
     }
 
+    private static void AddDefaultServices(this IServiceCollection services)
+    {
+        services.AddControllers();
+        services.AddOpenApi()
+            .AddEndpointsApiExplorer()
+            .AddSwaggerGen();   
+    }
+
     public static WebApplication ConfigureApplication(this WebApplication app)
     {
+        return app.AddDefaultAppPipeline();
+    }
+
+    private static WebApplication AddDefaultAppPipeline(this WebApplication app)
+    {
+        app.MapOpenApi();
+        app.UseSwagger()
+            .UseSwaggerUI();
+        app.UseHttpsRedirection()
+            .UseAuthorization();
+        app.MapControllers();
+
         return app;
     }
 }
