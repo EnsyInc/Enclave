@@ -1,4 +1,4 @@
-namespace DotNetTemplate.Api;
+namespace EnsyInc.Enclave.Api;
 
 public class WeatherForecast
 {
