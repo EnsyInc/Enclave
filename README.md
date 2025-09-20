@@ -1,0 +1,1 @@
+# This is a template repository for creating new .NET API projects.

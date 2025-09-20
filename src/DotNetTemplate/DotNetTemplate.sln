@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36310.24
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetTemplate.Api", "DotNetTemplate.Api\DotNetTemplate.Api.csproj", "{BF1EFCD9-E3A6-4FB9-9878-E6B9DCFAB376}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		Directory.Packages.props = Directory.Packages.props
+		NuGet.Config = NuGet.Config
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BF1EFCD9-E3A6-4FB9-9878-E6B9DCFAB376}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF1EFCD9-E3A6-4FB9-9878-E6B9DCFAB376}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF1EFCD9-E3A6-4FB9-9878-E6B9DCFAB376}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF1EFCD9-E3A6-4FB9-9878-E6B9DCFAB376}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {41757F88-BF66-4E52-952C-CCF80F5DCC23}
+	EndGlobalSection
+EndGlobal
