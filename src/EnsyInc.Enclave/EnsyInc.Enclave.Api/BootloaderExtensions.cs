@@ -3,6 +3,8 @@ using NLog.Extensions.Logging;
 
 using System.Reflection;
 
+using EnsyInc.Enclave.DataAccess.EF;
+
 namespace EnsyInc.Enclave.Api;
 
 internal static class BootloaderExtensions
@@ -11,7 +13,7 @@ internal static class BootloaderExtensions
     {
         builder.Configuration.InitializeConfiguration(builder.Environment.EnvironmentName);
         builder.Logging.ConfigureLogging();
-        builder.Services.AddDefaultServices();
+        builder.Services.AddServices(builder.Configuration);
         
         return builder;
     }
@@ -33,6 +35,12 @@ internal static class BootloaderExtensions
         builder.ClearProviders();
         builder.AddNLog();
         LogManager.Setup().LoadConfigurationFromFile("nlog.config");
+    }
+
+    private static void AddServices(this IServiceCollection services, IConfiguration config)
+    {
+        services.AddDefaultServices();
+        services.AddDataAccess(config);
     }
 
     private static void AddDefaultServices(this IServiceCollection services)
