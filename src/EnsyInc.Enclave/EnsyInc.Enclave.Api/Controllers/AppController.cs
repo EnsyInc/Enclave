@@ -44,7 +44,7 @@ public class AppController : ControllerBase
     [ProducesResponseType<ErrorResponse>(StatusCodes.Status403Forbidden, MediaTypeNames.Application.Json)]
     [ProducesResponseType<ErrorResponse>(StatusCodes.Status500InternalServerError, MediaTypeNames.Application.Json)]
     [ProducesResponseType<ErrorResponse>(StatusCodes.Status503ServiceUnavailable, MediaTypeNames.Application.Json)]
-    public async Task<IActionResult> UnregisterApp([FromRoute]Guid id, CancellationToken ct)
+    public async Task<IActionResult> UnregisterApp([FromRoute] Guid id, CancellationToken ct)
     {
         await Task.Delay(10, ct);
         return Ok();
@@ -56,6 +56,7 @@ public class AppController : ControllerBase
     /// <param name="id">The id of the application to retrieve.</param>
     /// <param name="ct"></param>
     [HttpGet("{id:guid}")]
+    [ProducesResponseType<GetAppResponse>(StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
     [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest, MediaTypeNames.Application.Json)]
     [ProducesResponseType<ErrorResponse>(StatusCodes.Status401Unauthorized, MediaTypeNames.Application.Json)]
     [ProducesResponseType<ErrorResponse>(StatusCodes.Status403Forbidden, MediaTypeNames.Application.Json)]
@@ -68,13 +69,14 @@ public class AppController : ControllerBase
     }
 
     /// <summary>
-    /// Retrieves the details of all application from the Enclave system.
+    /// Retrieves the details of all applications from the Enclave system.
     /// </summary>
     /// <remarks>
     /// Will most likely be paginated in the future.
     /// </remarks>
     /// <param name="ct"></param>
     [HttpGet]
+    [ProducesResponseType<GetAppsResponse>(StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
     [ProducesResponseType<ErrorResponse>(StatusCodes.Status400BadRequest, MediaTypeNames.Application.Json)]
     [ProducesResponseType<ErrorResponse>(StatusCodes.Status401Unauthorized, MediaTypeNames.Application.Json)]
     [ProducesResponseType<ErrorResponse>(StatusCodes.Status403Forbidden, MediaTypeNames.Application.Json)]
@@ -94,6 +96,7 @@ public class AppController : ControllerBase
     /// If needed a more complex update mechanism can be implemented later.
     /// </remarks>
     /// <param name="id">The id of the application to update.</param>
+    /// <param name="request">Updates to be applied to the application.</param>
     /// <param name="ct"></param>
     [HttpPut("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -102,7 +105,7 @@ public class AppController : ControllerBase
     [ProducesResponseType<ErrorResponse>(StatusCodes.Status403Forbidden, MediaTypeNames.Application.Json)]
     [ProducesResponseType<ErrorResponse>(StatusCodes.Status500InternalServerError, MediaTypeNames.Application.Json)]
     [ProducesResponseType<ErrorResponse>(StatusCodes.Status503ServiceUnavailable, MediaTypeNames.Application.Json)]
-    public async Task<IActionResult> UpdateApp([FromRoute] Guid id, CancellationToken ct)
+    public async Task<IActionResult> UpdateApp([FromRoute] Guid id, [FromBody] UpdateAppRequest request, CancellationToken ct)
     {
         await Task.Delay(10, ct);
         return Ok();
