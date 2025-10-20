@@ -11,4 +11,9 @@
     <PackageReference Include="Swashbuckle.AspNetCore" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\EnsyInc.Enclave.Core\EnsyInc.Enclave.Core.csproj" />
+    <ProjectReference Include="..\EnsyInc.Enclave.DataAccess.EF\EnsyInc.Enclave.DataAccess.EF.csproj" />
+  </ItemGroup>
+
 </Project>

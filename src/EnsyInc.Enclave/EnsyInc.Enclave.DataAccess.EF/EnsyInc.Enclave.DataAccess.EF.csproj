@@ -1,0 +1,9 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <PackageReference Include="EnsyNet.DataAccess.EntityFramework" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EnsyInc.Enclave.DataAccess\EnsyInc.Enclave.DataAccess.csproj" />
+  </ItemGroup>
+</Project>
