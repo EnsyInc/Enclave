@@ -60,7 +60,6 @@ internal static class BootloaderExtensions
 
     public static void RunApplication(this WebApplication app)
     {
-        var exceptionThrown = false;
         try
         {
             app.Run();
@@ -72,17 +71,7 @@ internal static class BootloaderExtensions
             LogManager.GetCurrentClassLogger().Fatal(ex, "An error occurred in the application");
             LogManager.Flush();
             LogManager.Shutdown();
-            exceptionThrown = true;
             Environment.Exit(1);
-        }
-        finally
-        {
-            if (!exceptionThrown)
-            {
-
-                LogManager.Flush();
-                LogManager.Shutdown();
-            }
         }
     }
 }
