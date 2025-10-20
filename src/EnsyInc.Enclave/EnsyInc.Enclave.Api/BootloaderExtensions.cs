@@ -1,6 +1,8 @@
 ﻿using NLog;
 using NLog.Extensions.Logging;
 
+using System.Reflection;
+
 namespace EnsyInc.Enclave.Api;
 
 internal static class BootloaderExtensions
@@ -38,7 +40,11 @@ internal static class BootloaderExtensions
         services.AddControllers();
         services.AddOpenApi()
             .AddEndpointsApiExplorer()
-            .AddSwaggerGen();   
+            .AddSwaggerGen(opt =>
+            {
+                var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                opt.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
+            });   
     }
 
     public static WebApplication ConfigureApplication(this WebApplication app)
