@@ -57,4 +57,24 @@ internal static class BootloaderExtensions
 
         return app;
     }
+
+    public static void RunApplication(this WebApplication app)
+    {
+        try
+        {
+            app.Run();
+        }
+#pragma warning disable CA1031
+        catch (Exception ex)
+#pragma warning restore CA1031
+        {
+            LogManager.GetCurrentClassLogger().Fatal(ex, "An error occurred in the application");
+            LogManager.Shutdown();
+            Environment.Exit(1);
+        }
+        finally
+        {
+            LogManager.Shutdown();
+        }
+    }
 }
