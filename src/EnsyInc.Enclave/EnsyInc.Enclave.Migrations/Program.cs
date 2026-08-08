@@ -11,5 +11,5 @@ builder.ConfigureServices((context, services) =>
 var app = builder.Build();
 
 var dbContextFactory = app.Services.GetRequiredService<IDbContextFactory<EnclaveDbContext>>();
-using var dbContext = dbContextFactory.CreateDbContext();
-dbContext.Database.Migrate();
+await using var dbContext = dbContextFactory.CreateDbContext();
+await dbContext.Database.MigrateAsync();

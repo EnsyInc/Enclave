@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 using EnsyInc.Enclave.Core.Models;
 
 using JetBrains.Annotations;
@@ -20,7 +22,7 @@ public sealed record GetProductsRequest(
 public sealed record CreateProductRequest(
     string Name,
     string? Description,
-    ProductStatus Status);
+    [property: JsonRequired] ProductStatus Status);
 
 /// <summary>A single product.</summary>
 /// <param name="Id">The product's unique identifier.</param>
@@ -51,4 +53,4 @@ public sealed record GetProductsResponse(IEnumerable<GetProductResponse> Product
 public sealed record UpdateProductRequest(
     string Name,
     string? Description,
-    ProductStatus Status);
+    [property: JsonRequired] ProductStatus Status);

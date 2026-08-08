@@ -178,7 +178,7 @@ jobs:
           -d:sonar.token="$SONAR_TOKEN"
           -d:sonar.cs.vscoveragexml.reportsPaths="./test-results/unit-coverage.xml,./test-results/service-coverage.xml"
           -d:sonar.coverage.exclusions="**/*Tests*/**"
-          -d:sonar.exclusions="**/*.slnx,**/Migrations/*.Designer.cs,**/Migrations/*ModelSnapshot.cs"
+          -d:sonar.exclusions="**/*.slnx,**/Migrations/*.cs"
 
       - name: Build solution
         run: dotnet build "$SLN_PATH" -c Release

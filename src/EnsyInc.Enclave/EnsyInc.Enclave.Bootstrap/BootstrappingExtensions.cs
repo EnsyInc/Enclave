@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using System.Text.Json.Serialization;
 
 using EnsyInc.Enclave.DataAccess.EF;
@@ -15,6 +16,7 @@ using NLog.Extensions.Logging;
 
 namespace EnsyInc.Enclave.Bootstrap;
 
+[SuppressMessage("Naming", "CA1708:Identifiers should differ by more than case", Justification = "The compiler emits a member literally named 'extension' for each C# extension block; there's no way to rename a compiler-synthesized symbol.")]
 public static class BootstrappingExtensions
 {
     extension(WebApplicationBuilder builder)
@@ -113,6 +115,7 @@ public static class BootstrappingExtensions
                 LogManager.Flush();
                 LogManager.Shutdown();
                 Environment.Exit(1);
+                throw;
             }
 
             LogManager.Flush();
