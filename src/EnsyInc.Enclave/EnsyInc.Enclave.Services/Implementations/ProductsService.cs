@@ -22,7 +22,7 @@ internal sealed class ProductsService(IProductRepo productRepo) : IProductsServi
 
     public async Task<Result<IEnumerable<Product>>> ListProductByName(string name, CancellationToken ct)
     {
-        var result = await productRepo.GetManyByExpression(p => p.Name.Contains(name), ct);
+        var result = await productRepo.GetManyByExpression(p => p.Name.Contains(name, StringComparison.OrdinalIgnoreCase), ct);
         return result.HasError
             ? Result.FromError<IEnumerable<Product>>(new UnexpectedError())
             : Result.Ok(result.Data.Select(e => e.ToCoreModel()));

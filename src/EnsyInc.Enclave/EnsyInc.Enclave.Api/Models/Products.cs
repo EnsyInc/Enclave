@@ -4,6 +4,14 @@ using JetBrains.Annotations;
 
 namespace EnsyInc.Enclave.Api.Models;
 
+/// <summary>
+/// Request to get a list of products, optionally filtered by name.
+/// </summary>
+/// <param name="Name">When provided, only products whose name contains this value are returned. Case-insensitive.</param>
+[PublicAPI]
+public sealed record GetProductsRequest(
+    string? Name);
+
 /// <summary>Fields for creating a new product.</summary>
 /// <param name="Name">The product's display name.</param>
 /// <param name="Description">An optional free-text description.</param>

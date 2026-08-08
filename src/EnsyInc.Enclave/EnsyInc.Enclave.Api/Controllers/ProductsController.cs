@@ -20,18 +20,18 @@ public sealed class ProductsController(
     : ControllerBase
 {
     /// <summary>Lists products, optionally filtered by name.</summary>
-    /// <param name="name">When provided, only products whose name contains this value are returned.</param>
+    /// <param name="request">The request containing the name filter.</param>
     /// <param name="ct">Cancellation token.</param>
     /// <response code="200">The matching products.</response>
     /// <response code="500">An unexpected error occurred.</response>
     [HttpGet]
     [ProducesResponseType(typeof(GetProductsResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResponse), StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> GetProducts([FromQuery] string? name, CancellationToken ct)
+    public async Task<IActionResult> GetProducts([FromQuery] GetProductsRequest request, CancellationToken ct)
     {
-        var result = string.IsNullOrWhiteSpace(name)
+        var result = string.IsNullOrWhiteSpace(request.Name)
             ? await productsService.ListProduct(ct)
-            : await productsService.ListProductByName(name, ct);
+            : await productsService.ListProductByName(request.Name, ct);
 
         return result switch
         {
