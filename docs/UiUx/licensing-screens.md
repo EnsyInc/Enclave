@@ -1,5 +1,7 @@
 # Licensing Service — Screens & Flows (spec for UI/UX handoff)
 
+[Figma](https://www.figma.com/design/l6BSNZ2P2zn1ZPFevqbRio/Enclave-Design-System-v1?node-id=0-1&p=f&t=q4bX35ha4V7tcLn7-0)
+
 See [licensing-service.md](../licensing-service.md) for the underlying entities and feature list this spec is built on.
 
 **Scope note**: this document specifies *what* screens exist, what data/actions each needs, and the flows between them. It intentionally does not prescribe layout, visual design, or component choices — that's for the UI/UX designer to own.
