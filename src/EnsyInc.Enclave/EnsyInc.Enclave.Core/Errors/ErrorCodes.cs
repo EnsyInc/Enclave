@@ -25,4 +25,20 @@ public static class ErrorCodes
     public const string UserNotFoundError = "[UserNotFoundError]";
 
     #endregion
+
+    #region Licenses
+
+    public const string LicenseNotFoundError = "[LicenseNotFoundError]";
+    public const string LicenseAlreadyExistsError = "[LicenseAlreadyExistsError]";
+
+    #endregion
+
+    #region LicenseRequests
+
+    public const string LicenseRequestNotFoundError = "[LicenseRequestNotFoundError]";
+    public const string LicenseRequestNotPendingError = "[LicenseRequestNotPendingError]";
+    public const string LicenseRequestStartDateRequiredError = "[LicenseRequestStartDateRequiredError]";
+    public const string LicenseRequestInvalidDateRangeError = "[LicenseRequestInvalidDateRangeError]";
+
+    #endregion
 }

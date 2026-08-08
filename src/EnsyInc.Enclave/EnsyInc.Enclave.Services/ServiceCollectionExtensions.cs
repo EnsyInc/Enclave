@@ -11,5 +11,7 @@ public static class ServiceCollectionExtensions
         => services
             .AddScoped<IProductsService, ProductsService>()
             .AddScoped<IOrgsService, OrgsService>()
-            .AddScoped<IUsersService, UsersService>();
+            .AddScoped<IUsersService, UsersService>()
+            .AddScoped<ILicensesService, LicensesService>()
+            .AddScoped<ILicenseRequestsService, LicenseRequestsService>();
 }

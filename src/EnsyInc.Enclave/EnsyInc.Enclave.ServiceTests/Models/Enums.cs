@@ -30,3 +30,19 @@ public enum UserRole
     Reader = 0,
     Admin = 1,
 }
+
+public enum LicenseStatus
+{
+    Scheduled = 0,
+    Active = 1,
+    Expired = 2,
+    Suspended = 3,
+    Revoked = 4,
+}
+
+public enum LicenseRequestStatus
+{
+    Pending = 0,
+    Approved = 1,
+    Rejected = 2,
+}
