@@ -173,6 +173,7 @@ jobs:
           dotnet sonarscanner begin
           -o:"ensyinc"
           -k:"EnsyInc_Enclave"
+          -n:"Enclave"
           -d:sonar.host.url="https://sonarcloud.io"
           -d:sonar.token="$SONAR_TOKEN"
           -d:sonar.cs.vscoveragexml.reportsPaths="./test-results/unit-coverage.xml,./test-results/service-coverage.xml"
