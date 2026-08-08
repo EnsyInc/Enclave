@@ -11,4 +11,5 @@
   <Project Path="EnsyInc.Enclave.DataAccess.EF/EnsyInc.Enclave.DataAccess.EF.csproj" />
   <Project Path="EnsyInc.Enclave.DataAccess/EnsyInc.Enclave.DataAccess.csproj" />
   <Project Path="EnsyInc.Enclave.Migrations/EnsyInc.Enclave.Migrations.csproj" />
+  <Project Path="EnsyInc.Enclave.Services/EnsyInc.Enclave.Services.csproj" Id="416b0170-5194-456e-8a51-8b5c4608b615" />
 </Solution>

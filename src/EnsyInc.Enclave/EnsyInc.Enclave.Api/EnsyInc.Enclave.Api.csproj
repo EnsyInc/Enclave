@@ -5,6 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
     <PackageReference Include="JetBrains.Annotations" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
     <PackageReference Include="NLog.Web.AspNetCore" />
@@ -14,6 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\EnsyInc.Enclave.Bootstrap\EnsyInc.Enclave.Bootstrap.csproj" />
     <ProjectReference Include="..\EnsyInc.Enclave.Core\EnsyInc.Enclave.Core.csproj" />
+    <ProjectReference Include="..\EnsyInc.Enclave.Services\EnsyInc.Enclave.Services.csproj" />
   </ItemGroup>
 
 </Project>
