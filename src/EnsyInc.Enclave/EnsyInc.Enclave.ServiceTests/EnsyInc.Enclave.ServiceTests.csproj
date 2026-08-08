@@ -24,8 +24,4 @@
     <PackageReference Include="xunit.runner.visualstudio" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\EnsyInc.Enclave.Api\EnsyInc.Enclave.Api.csproj" />
-  </ItemGroup>
-
 </Project>

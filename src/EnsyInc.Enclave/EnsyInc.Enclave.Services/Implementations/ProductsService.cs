@@ -62,6 +62,12 @@ internal sealed class ProductsService(IProductRepo productRepo) : IProductsServi
 
     public async Task<Result<Product>> UpdateProduct(Product product, CancellationToken ct)
     {
+        var existing = await GetProduct(product.Id, ct);
+        if (existing.HasError)
+        {
+            return Result.FromError<Product>(existing.Error);
+        }
+
         var updateResult = await productRepo.Update(product.Id, updates =>
         {
             updates.AddUpdate(p => p.Name, _ => product.Name);
@@ -78,22 +84,19 @@ internal sealed class ProductsService(IProductRepo productRepo) : IProductsServi
             };
         }
 
-        var getResult = await productRepo.GetById(product.Id, ct);
-
-        if (getResult.HasError)
-        {
-            return getResult.Error switch
-            {
-                EntityNotFoundError<ProductEntity> => Result.FromError<Product>(new ProductNotFoundError()),
-                _ => Result.FromError<Product>(new UnexpectedError()),
-            };
-        }
-
-        return Result.Ok(getResult.Data.ToCoreModel());
+        // The update already told us it succeeded, so the new state is known without re-querying:
+        // apply the same field changes to the entity fetched above instead of fetching again.
+        return Result.Ok(existing.Data with { Name = product.Name, Description = product.Description, Status = product.Status, UpdatedAt = DateTime.UtcNow });
     }
 
     public async Task<Result<Product>> RetireProduct(Guid id, CancellationToken ct)
     {
+        var existing = await GetProduct(id, ct);
+        if (existing.HasError)
+        {
+            return Result.FromError<Product>(existing.Error);
+        }
+
         var updateResult = await productRepo.Update(id, updates => updates.AddUpdate(p => p.Status, _ => ProductStatus.Retired), ct);
 
         if (updateResult.HasError)
@@ -105,18 +108,7 @@ internal sealed class ProductsService(IProductRepo productRepo) : IProductsServi
             };
         }
 
-        var getResult = await productRepo.GetById(id, ct);
-
-        if (getResult.HasError)
-        {
-            return getResult.Error switch
-            {
-                EntityNotFoundError<ProductEntity> => Result.FromError<Product>(new ProductNotFoundError()),
-                _ => Result.FromError<Product>(new UnexpectedError()),
-            };
-        }
-
-        return Result.Ok(getResult.Data.ToCoreModel());
+        return Result.Ok(existing.Data with { Status = ProductStatus.Retired, UpdatedAt = DateTime.UtcNow });
     }
 
     public async Task<Result<bool>> SoftDeleteProduct(Guid id, CancellationToken ct)

@@ -19,7 +19,7 @@ services:
       dockerfile: Dockerfile
       target: migrations
     environment:
-      Db__ConnectionString: "Server=db;Database=EnsyTrack;User Id=sa;Password=Password1!;TrustServerCertificate=True;"
+      Db__ConnectionString: "Server=db;Database=Enclave;User Id=sa;Password=Password1!;TrustServerCertificate=True;"
     depends_on:
       db:
         condition: service_healthy
@@ -30,7 +30,7 @@ services:
       dockerfile: Dockerfile
       target: api
     environment:
-      Db__ConnectionString: "Server=db;Database=EnsyTrack;User Id=sa;Password=Password1!;TrustServerCertificate=True;"
+      Db__ConnectionString: "Server=db;Database=Enclave;User Id=sa;Password=Password1!;TrustServerCertificate=True;"
     ports:
       - "7150:7150"
       - "5243:5243"

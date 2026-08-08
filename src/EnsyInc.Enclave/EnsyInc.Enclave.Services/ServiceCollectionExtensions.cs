@@ -8,5 +8,8 @@ namespace EnsyInc.Enclave.Services;
 public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
-        => services.AddScoped<IProductsService, ProductsService>();
+        => services
+            .AddScoped<IProductsService, ProductsService>()
+            .AddScoped<IOrgsService, OrgsService>()
+            .AddScoped<IUsersService, UsersService>();
 }
