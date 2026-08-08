@@ -24,7 +24,13 @@ public static class ServiceCollectionsExtensions
     }
 
     private static IServiceCollection AddRepos(this IServiceCollection services)
-        => services.AddScoped<IAppRepository, AppRepository>();
+        => services
+            .AddScoped<IAppRepository, AppRepository>()
+            .AddScoped<ILicenseRepo, LicenseRepo>()
+            .AddScoped<ILicenseRequestRepo, LicenseRequestRepo>()
+            .AddScoped<IOrgRepo, OrgRepo>()
+            .AddScoped<IProductRepo, ProductRepo>()
+            .AddScoped<IUserRepo, UserRepo>();
 
     private static DbContextOptions<EnclaveDbContext> GetDbContextOptions(DbConfig dbConfig)
         => new DbContextOptionsBuilder<EnclaveDbContext>()
