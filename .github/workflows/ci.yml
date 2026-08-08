@@ -96,8 +96,15 @@ jobs:
       - name: Apply database migrations
         run: dotnet run --project src/EnsyInc.Enclave/EnsyInc.Enclave.Migrations/EnsyInc.Enclave.Migrations.csproj -c Release
 
-      - name: Start Api in background
-        run: nohup dotnet run --project src/EnsyInc.Enclave/EnsyInc.Enclave.Api/EnsyInc.Enclave.Api.csproj -c Release > api.log 2>&1 &
+      - name: Install dotnet-coverage
+        run: dotnet tool install --global dotnet-coverage
+
+      - name: Start Api in background with coverage collection
+        run: |
+          mkdir -p ./test-results
+          nohup dotnet-coverage collect -f xml -o ./test-results/service-coverage.xml -- \
+            dotnet run --project src/EnsyInc.Enclave/EnsyInc.Enclave.Api/EnsyInc.Enclave.Api.csproj -c Release > api.log 2>&1 &
+          echo $! > api.pid
 
       - name: Wait for Api to be ready
         run: |
@@ -113,14 +120,22 @@ jobs:
           cat api.log || true
           exit 1
 
-      - name: Install dotnet-coverage
-        run: dotnet tool install --global dotnet-coverage
+      - name: Run service tests
+        run: dotnet test src/EnsyInc.Enclave/EnsyInc.Enclave.ServiceTests/EnsyInc.Enclave.ServiceTests.csproj -c Release
 
-      - name: Run service tests with coverage
+      - name: Stop Api and flush coverage
         run: |
-          mkdir -p ./test-results
-          dotnet-coverage collect -f xml -o ./test-results/service-coverage.xml -- \
-            dotnet test src/EnsyInc.Enclave/EnsyInc.Enclave.ServiceTests/EnsyInc.Enclave.ServiceTests.csproj -c Release
+          kill -SIGINT "$(cat api.pid)"
+          for i in $(seq 1 30); do
+            if [ -f ./test-results/service-coverage.xml ]; then
+              echo "Coverage report written"
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "Coverage report was not written in time"
+          cat api.log || true
+          exit 1
 
       - name: Upload service test coverage
         uses: actions/upload-artifact@v4
@@ -178,7 +193,7 @@ jobs:
           -d:sonar.token="$SONAR_TOKEN"
           -d:sonar.cs.vscoveragexml.reportsPaths="./test-results/unit-coverage.xml,./test-results/service-coverage.xml"
           -d:sonar.coverage.exclusions="**/*Tests*/**"
-          -d:sonar.exclusions="**/*.slnx,**/Migrations/*.cs"
+          -d:sonar.exclusions="**/*.slnx,**/Migrations/*.cs,.github/**"
 
       - name: Build solution
         run: dotnet build "$SLN_PATH" -c Release
