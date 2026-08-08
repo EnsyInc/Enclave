@@ -1,5 +1,4 @@
 using EnsyInc.Enclave.Api.Middleware;
-using EnsyInc.Enclave.Api.Validators;
 using EnsyInc.Enclave.Bootstrap;
 
 using FluentValidation;
@@ -11,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args)
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
-builder.Services.AddValidatorsFromAssemblyContaining<CreateProductRequestValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 builder.Services.Configure<MvcOptions>(opt =>
     opt.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true);
 
