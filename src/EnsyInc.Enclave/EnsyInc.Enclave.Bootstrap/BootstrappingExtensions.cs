@@ -110,14 +110,13 @@ public static class BootstrappingExtensions
             catch (Exception ex)
             {
                 LogManager.GetCurrentClassLogger().Fatal(ex, "An error occurred in the application");
-                throw;
-            }
-            finally
-            {
                 LogManager.Flush();
                 LogManager.Shutdown();
                 Environment.Exit(1);
             }
+
+            LogManager.Flush();
+            LogManager.Shutdown();
         }
     }
 }
