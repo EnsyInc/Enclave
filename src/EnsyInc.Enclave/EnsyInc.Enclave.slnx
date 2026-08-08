@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+    <File Path="Directory.Build.props" />
+    <File Path="Directory.Packages.props" />
+    <File Path="NuGet.Config" />
+  </Folder>
+  <Project Path="EnsyInc.Enclave.Api/EnsyInc.Enclave.Api.csproj" />
+  <Project Path="EnsyInc.Enclave.Bootstrap/EnsyInc.Enclave.Bootstrap.csproj" />
+  <Project Path="EnsyInc.Enclave.Core/EnsyInc.Enclave.Core.csproj" />
+  <Project Path="EnsyInc.Enclave.DataAccess.EF/EnsyInc.Enclave.DataAccess.EF.csproj" />
+  <Project Path="EnsyInc.Enclave.DataAccess/EnsyInc.Enclave.DataAccess.csproj" />
+  <Project Path="EnsyInc.Enclave.Migrations/EnsyInc.Enclave.Migrations.csproj" />
+</Solution>

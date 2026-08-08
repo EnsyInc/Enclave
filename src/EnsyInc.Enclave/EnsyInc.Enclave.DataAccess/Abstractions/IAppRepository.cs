@@ -4,6 +4,4 @@ using EnsyNet.DataAccess.Abstractions.Interfaces;
 
 namespace EnsyInc.Enclave.DataAccess.Abstractions;
 
-public interface IAppRepository : IRepository<DbApp>
-{
-}
+public interface IAppRepository : IRepository<DbApp>;
