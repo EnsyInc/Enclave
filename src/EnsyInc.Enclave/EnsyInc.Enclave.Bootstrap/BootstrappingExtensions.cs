@@ -1,11 +1,14 @@
 ﻿using System.Reflection;
+using System.Text.Json.Serialization;
 
 using EnsyInc.Enclave.DataAccess.EF;
+using EnsyInc.Enclave.Services;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi;
 
 using NLog;
 using NLog.Extensions.Logging;
@@ -55,16 +58,25 @@ public static class BootstrappingExtensions
     {
         private void AddServices(IConfiguration config)
             => services.AddDefaultServices()
-                .AddDataAccess(config);
+                .AddDataAccess(config)
+                .AddApplicationServices();
 
         private IServiceCollection AddDefaultServices()
         {
-            services.AddControllers();
+            services.AddControllers()
+                .AddJsonOptions(opt => opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
             services.AddOpenApi()
                 .AddEndpointsApiExplorer()
                 .AddSwaggerGen(opt =>
                 {
-                    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                    opt.SwaggerDoc("v1", new OpenApiInfo
+                    {
+                        Title = "EnsyInc.Enclave — Licensing API",
+                        Version = "v1",
+                        Description = "Admin and customer backoffice endpoints for the Licensing service.",
+                    });
+
+                    var xmlFilename = $"{Assembly.GetEntryAssembly()!.GetName().Name}.xml";
                     opt.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
                 });
             return services;
@@ -78,6 +90,7 @@ public static class BootstrappingExtensions
 
         private WebApplication AddDefaultAppPipeline()
         {
+            app.UseExceptionHandler();
             app.MapOpenApi();
             app.UseSwagger()
                 .UseSwaggerUI();

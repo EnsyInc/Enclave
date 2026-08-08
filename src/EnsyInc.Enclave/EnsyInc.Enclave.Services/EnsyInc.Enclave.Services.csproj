@@ -1,0 +1,10 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <Folder Include="Implementations\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EnsyInc.Enclave.Core\EnsyInc.Enclave.Core.csproj" />
+    <ProjectReference Include="..\EnsyInc.Enclave.DataAccess\EnsyInc.Enclave.DataAccess.csproj" />
+  </ItemGroup>
+
+</Project>
