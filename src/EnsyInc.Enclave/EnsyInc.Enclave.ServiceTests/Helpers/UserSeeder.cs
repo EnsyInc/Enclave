@@ -5,9 +5,9 @@ using Microsoft.Data.SqlClient;
 namespace EnsyInc.Enclave.ServiceTests.Helpers;
 
 /// <summary>Direct-SQL escape hatch for seeding data the API can't produce on its own (e.g. specific states/timestamps).</summary>
-public static class ProductSeeder
+public static class UserSeeder
 {
-    public static async Task<Guid> InsertProduct(string connectionString, string name, string? description, ProductStatus status, CancellationToken ct)
+    public static async Task<Guid> InsertUser(string connectionString, Guid orgId, string name, string email, UserStatus status, UserRole role, CancellationToken ct)
     {
         var id = Guid.NewGuid();
 
@@ -16,26 +16,28 @@ public static class ProductSeeder
 
         await using var command = connection.CreateCommand();
         command.CommandText = """
-            INSERT INTO Products (Id, Name, Description, Status, CreatedAt)
-            VALUES (@Id, @Name, @Description, @Status, GETUTCDATE());
+            INSERT INTO Users (Id, Name, Email, OrgId, Status, Role, CreatedAt)
+            VALUES (@Id, @Name, @Email, @OrgId, @Status, @Role, GETUTCDATE());
             """;
         command.Parameters.AddWithValue("@Id", id);
         command.Parameters.AddWithValue("@Name", name);
-        command.Parameters.AddWithValue("@Description", (object?)description ?? DBNull.Value);
+        command.Parameters.AddWithValue("@Email", email);
+        command.Parameters.AddWithValue("@OrgId", orgId);
         command.Parameters.AddWithValue("@Status", status.ToString());
+        command.Parameters.AddWithValue("@Role", role.ToString());
 
         await command.ExecuteNonQueryAsync(ct);
 
         return id;
     }
 
-    public static async Task DeleteProduct(string connectionString, Guid id, CancellationToken ct)
+    public static async Task DeleteUser(string connectionString, Guid id, CancellationToken ct)
     {
         await using var connection = new SqlConnection(connectionString);
         await connection.OpenAsync(ct);
 
         await using var command = connection.CreateCommand();
-        command.CommandText = "DELETE FROM Products WHERE Id = @Id;";
+        command.CommandText = "DELETE FROM Users WHERE Id = @Id;";
         command.Parameters.AddWithValue("@Id", id);
 
         await command.ExecuteNonQueryAsync(ct);

@@ -13,4 +13,16 @@ public static class ErrorCodes
     public const string ProductNotFoundError = "[ProductNotFoundError]";
 
     #endregion
+
+    #region Orgs
+
+    public const string OrgNotFoundError = "[OrgNotFoundError]";
+
+    #endregion
+
+    #region Users
+
+    public const string UserNotFoundError = "[UserNotFoundError]";
+
+    #endregion
 }

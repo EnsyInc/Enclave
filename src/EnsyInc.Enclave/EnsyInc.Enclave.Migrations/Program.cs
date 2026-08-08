@@ -1,8 +1,16 @@
-﻿using EnsyInc.Enclave.DataAccess.EF;
+using EnsyInc.Enclave.DataAccess.EF;
 
 using Microsoft.EntityFrameworkCore;
 
+using NLog;
+using NLog.Extensions.Logging;
+
 var builder = Host.CreateDefaultBuilder(args);
+builder.ConfigureLogging(logging =>
+{
+    logging.ClearProviders();
+    logging.AddNLog();
+});
 builder.ConfigureServices((context, services) =>
 {
     services.AddDataAccess(context.Configuration);
@@ -10,6 +18,25 @@ builder.ConfigureServices((context, services) =>
 
 var app = builder.Build();
 
-var dbContextFactory = app.Services.GetRequiredService<IDbContextFactory<EnclaveDbContext>>();
-await using var dbContext = dbContextFactory.CreateDbContext();
-await dbContext.Database.MigrateAsync();
+LogManager.Setup().LoadConfigurationFromFile("nlog.config");
+var logger = LogManager.GetCurrentClassLogger();
+
+try
+{
+    var dbContextFactory = app.Services.GetRequiredService<IDbContextFactory<EnclaveDbContext>>();
+    await using var dbContext = dbContextFactory.CreateDbContext();
+
+    logger.Info("Applying database migrations...");
+    await dbContext.Database.MigrateAsync();
+    logger.Info("Database migrations applied successfully.");
+}
+catch (Exception ex)
+{
+    logger.Fatal(ex, "Failed to apply database migrations.");
+    LogManager.Flush();
+    LogManager.Shutdown();
+    Environment.Exit(1);
+}
+
+LogManager.Flush();
+LogManager.Shutdown();

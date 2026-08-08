@@ -13,11 +13,14 @@ internal sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> log
     {
         if (exception is ValidationException validationException)
         {
-            logger.LogWarning(validationException, "Validation failed while processing {Method} {Path}.", httpContext.Request.Method, httpContext.Request.Path);
-
             var parameters = validationException.Errors
                 .GroupBy(e => e.PropertyName)
                 .ToDictionary(g => g.Key, g => string.Join(" ", g.Select(e => e.ErrorMessage)));
+
+            // No exception instance passed here on purpose: client-input validation failures are
+            // routine, not exceptional, and logging the exception object would print its full stack
+            // trace on every single one.
+            logger.LogWarning("Validation failed while processing {Method} {Path}: {Errors}", httpContext.Request.Method, httpContext.Request.Path, string.Join("; ", parameters.Select(p => $"{p.Key}: {p.Value}")));
 
             httpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
             await httpContext.Response.WriteAsJsonAsync(ErrorResponses.ValidationError(parameters), ct);

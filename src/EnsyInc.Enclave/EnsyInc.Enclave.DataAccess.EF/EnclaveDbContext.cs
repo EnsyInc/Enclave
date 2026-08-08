@@ -13,7 +13,15 @@ public sealed class EnclaveDbContext : DbContext
     public DbSet<ProductEntity> Products { get; init; }
     public DbSet<UserEntity> Users { get; init; }
 
-    public EnclaveDbContext(DbContextOptions<EnclaveDbContext> options) : base(options) { }
+    public EnclaveDbContext(DbContextOptions<EnclaveDbContext> options) : base(options)
+    {
+        // Every mutation in this codebase goes through ExecuteUpdateAsync/ExecuteDeleteAsync
+        // (see BaseRepository), which bypass the change tracker entirely. Tracking query results
+        // therefore only risks returning stale, already-tracked entities on a second read within
+        // the same scoped DbContext after such a bypass-mutation, with no corresponding upside
+        // (nothing here relies on SaveChanges-based tracked updates), so it's disabled outright.
+        ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

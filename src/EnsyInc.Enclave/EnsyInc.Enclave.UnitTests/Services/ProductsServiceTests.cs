@@ -17,7 +17,7 @@ namespace EnsyInc.Enclave.UnitTests.Services;
 
 // Only covers scenarios ServiceTests (black-box, against a real running instance) can't reach:
 // repo/DB failures that can't be provoked through the API, internal call-sequencing assertions
-// only visible via mock Verify, race-condition-shaped paths, and HardDelete (no HTTP route exists).
+// only visible via mock Verify, and HardDelete (no HTTP route exists).
 public sealed class ProductsServiceTests
 {
     private readonly Mock<IProductRepo> _productRepoMock = new();
@@ -101,27 +101,14 @@ public sealed class ProductsServiceTests
     }
 
     [Fact]
-    public async Task UpdateProduct_UpdateFails_ReturnsProductNotFoundErrorWithoutFetching()
+    public async Task UpdateProduct_UpdateFailsAfterSuccessfulPrecheck_ReturnsProductNotFoundError()
     {
-        var product = CreateEntity().ToCoreModel();
-        _productRepoMock.Setup(r => r.Update(product.Id, It.IsAny<Action<EntityUpdates<ProductEntity>>>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(Result.FromError(new UpdateOperationFailedError()));
-
-        var result = await _sut.UpdateProduct(product, CancellationToken.None);
-
-        Assert.True(result.HasError);
-        Assert.IsType<ProductNotFoundError>(result.Error);
-        _productRepoMock.Verify(r => r.GetById(It.IsAny<Guid>(), It.IsAny<CancellationToken>()), Times.Never);
-    }
-
-    [Fact]
-    public async Task UpdateProduct_UpdateSucceedsButFollowUpGetFails_ReturnsProductNotFoundError()
-    {
-        var product = CreateEntity().ToCoreModel();
-        _productRepoMock.Setup(r => r.Update(product.Id, It.IsAny<Action<EntityUpdates<ProductEntity>>>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(Result.Ok());
+        var entity = CreateEntity();
+        var product = entity.ToCoreModel();
         _productRepoMock.Setup(r => r.GetById(product.Id, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(Result.FromError<ProductEntity>(new EntityNotFoundError<ProductEntity>()));
+            .ReturnsAsync(Result.Ok(entity));
+        _productRepoMock.Setup(r => r.Update(product.Id, It.IsAny<Action<EntityUpdates<ProductEntity>>>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Result.FromError(new UpdateOperationFailedError()));
 
         var result = await _sut.UpdateProduct(product, CancellationToken.None);
 
@@ -130,27 +117,13 @@ public sealed class ProductsServiceTests
     }
 
     [Fact]
-    public async Task RetireProduct_UpdateFails_ReturnsProductNotFoundErrorWithoutFetching()
+    public async Task RetireProduct_UpdateFailsAfterSuccessfulPrecheck_ReturnsProductNotFoundError()
     {
         var id = Guid.NewGuid();
+        _productRepoMock.Setup(r => r.GetById(id, It.IsAny<CancellationToken>()))
+            .ReturnsAsync(Result.Ok(CreateEntity(id)));
         _productRepoMock.Setup(r => r.Update(id, It.IsAny<Action<EntityUpdates<ProductEntity>>>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(Result.FromError(new UpdateOperationFailedError()));
-
-        var result = await _sut.RetireProduct(id, CancellationToken.None);
-
-        Assert.True(result.HasError);
-        Assert.IsType<ProductNotFoundError>(result.Error);
-        _productRepoMock.Verify(r => r.GetById(It.IsAny<Guid>(), It.IsAny<CancellationToken>()), Times.Never);
-    }
-
-    [Fact]
-    public async Task RetireProduct_UpdateSucceedsButFollowUpGetFails_ReturnsProductNotFoundError()
-    {
-        var id = Guid.NewGuid();
-        _productRepoMock.Setup(r => r.Update(id, It.IsAny<Action<EntityUpdates<ProductEntity>>>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(Result.Ok());
-        _productRepoMock.Setup(r => r.GetById(id, It.IsAny<CancellationToken>()))
-            .ReturnsAsync(Result.FromError<ProductEntity>(new EntityNotFoundError<ProductEntity>()));
 
         var result = await _sut.RetireProduct(id, CancellationToken.None);
 

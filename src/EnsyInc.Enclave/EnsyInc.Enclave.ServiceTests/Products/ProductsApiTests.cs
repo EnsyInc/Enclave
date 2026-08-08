@@ -1,10 +1,9 @@
 using System.Net;
 using System.Net.Http.Json;
 
-using EnsyInc.Enclave.Api.Models;
-using EnsyInc.Enclave.Core.Models;
 using EnsyInc.Enclave.ServiceTests.Fixtures;
 using EnsyInc.Enclave.ServiceTests.Helpers;
+using EnsyInc.Enclave.ServiceTests.Models;
 
 namespace EnsyInc.Enclave.ServiceTests.Products;
 
