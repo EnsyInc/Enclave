@@ -10,7 +10,7 @@ A licensable product/service.
 - Description
 - Status: `Active` / `Retired` — set via the admin's Retire action, not a freely editable field.
 
-Owned entirely by this service — the admin creates, edits, and retires products.
+Owned entirely by this service — the admin creates, edits, retires, and can permanently delete products (Delete is a separate, outright-removal action alongside the Retire status change).
 
 ### Org (customer)
 A thin customer record — **not a CRM**.
@@ -22,8 +22,11 @@ Deliberately minimal. Designed so a future dedicated client-management app can b
 
 ### User
 Belongs to an Org. An org can have multiple users. Backed by Active Directory (auth design TBD — likely Entra ID/B2B).
+- Name, Email
 - Role: `Admin` / `Reader` — Admin can manage org info, licenses, and other users within the org; Reader can view licenses/status and submit license/renewal requests but can't manage users. At least one Admin per org (the first user invited during org onboarding defaults to Admin).
 - Lifecycle status: `Active` / `Deactivated` / `Invite Sent`
+
+Whether Email is editable after invite (vs. fixed by the AD-backed identity) is TBD.
 
 ### License
 Links one Org to one Product.
@@ -31,6 +34,7 @@ Links one Org to one Product.
 - Status: `Active` / `Expired` / `Suspended` / `Revoked` — no separate "Pending Renewal" status; a pending request against a license is tracked on the License Request entity itself and surfaced via a banner/link, not by changing the license's own status.
 - Flat Org↔Product relationship — no per-instance/deployment binding
 - **No seat count, tier, or usage dimension in v1** — a license is just an org↔product↔date-range record. See "Future: multiple license types" below.
+- Status-change history — an audit trail of status transitions (e.g. grant, Active → Suspended → Revoked, renewal-driven expiry changes), surfaced on both the admin and customer License detail views.
 
 ### License Request
 Customer-initiated, admin-actioned. Covers **both** a request for a brand-new license (org doesn't have one for that product yet) and a renewal request for an existing license. There is no separate stored "type" field — whether a request is new-license or renewal is inferred from whether the org already holds a license for that product (existing license reference present = renewal; absent = new).
@@ -45,7 +49,7 @@ Approval differs by type: a **new-license** request sets both a start date and a
 
 ## Admin backoffice features
 
-- Product CRUD (create/edit/retire products available for licensing)
+- Product CRUD (create/edit/retire/delete products available for licensing)
 - Org CRUD (thin customer records) + manage users under an org (invite — single or batch, edit, deactivate, delete)
 - Grant a new license (select org + product + start/expiry dates)
 - View/search all licenses (filter by org, product, status; sortable, with time-left-until-expiry visible)
