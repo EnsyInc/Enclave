@@ -57,7 +57,7 @@ public sealed class OrgsController(
 
         return result switch
         {
-            { HasError: false } => Ok(result.Data!.ToPublicModel()),
+            { HasError: false } => Ok(result.Data.ToPublicModel()),
             { HasError: true, Error: OrgNotFoundError } => NotFound(ErrorResponses.OrgNotFoundError),
             _ => throw new UnhandledResultErrorException(),
         };
@@ -84,7 +84,7 @@ public sealed class OrgsController(
 
         return result switch
         {
-            { HasError: false } => CreatedAtAction(nameof(GetOrg), new { id = result.Data!.Id }, result.Data!.ToPublicModel()),
+            { HasError: false } => CreatedAtAction(nameof(GetOrg), new { id = result.Data.Id }, result.Data.ToPublicModel()),
             { HasError: true, Error: OrgNotFoundError } => NotFound(ErrorResponses.OrgNotFoundError),
             _ => throw new UnhandledResultErrorException(),
         };
@@ -112,7 +112,7 @@ public sealed class OrgsController(
 
         return result switch
         {
-            { HasError: false } => Ok(result.Data!.ToPublicModel()),
+            { HasError: false } => Ok(result.Data.ToPublicModel()),
             { HasError: true, Error: OrgNotFoundError } => NotFound(ErrorResponses.OrgNotFoundError),
             _ => throw new UnhandledResultErrorException(),
         };
@@ -134,7 +134,7 @@ public sealed class OrgsController(
 
         return result switch
         {
-            { HasError: false } => Ok(result.Data!.ToPublicModel()),
+            { HasError: false } => Ok(result.Data.ToPublicModel()),
             { HasError: true, Error: OrgNotFoundError } => NotFound(ErrorResponses.OrgNotFoundError),
             _ => throw new UnhandledResultErrorException(),
         };
@@ -156,7 +156,7 @@ public sealed class OrgsController(
 
         return result switch
         {
-            { HasError: false } => Ok(result.Data!.ToPublicModel()),
+            { HasError: false } => Ok(result.Data.ToPublicModel()),
             { HasError: true, Error: OrgNotFoundError } => NotFound(ErrorResponses.OrgNotFoundError),
             _ => throw new UnhandledResultErrorException(),
         };

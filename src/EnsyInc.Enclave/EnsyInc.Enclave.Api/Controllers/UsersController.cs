@@ -60,7 +60,7 @@ public sealed class UsersController(
 
         return result switch
         {
-            { HasError: false } => Ok(result.Data!.ToPublicModel()),
+            { HasError: false } => Ok(result.Data.ToPublicModel()),
             { HasError: true, Error: OrgNotFoundError } => NotFound(ErrorResponses.OrgNotFoundError),
             { HasError: true, Error: UserNotFoundError } => NotFound(ErrorResponses.UserNotFoundError),
             _ => throw new UnhandledResultErrorException(),
@@ -89,7 +89,7 @@ public sealed class UsersController(
 
         return result switch
         {
-            { HasError: false } => CreatedAtAction(nameof(GetUser), new { orgId, id = result.Data!.Id }, result.Data!.ToPublicModel()),
+            { HasError: false } => CreatedAtAction(nameof(GetUser), new { orgId, id = result.Data.Id }, result.Data.ToPublicModel()),
             { HasError: true, Error: OrgNotFoundError } => NotFound(ErrorResponses.OrgNotFoundError),
             { HasError: true, Error: UserNotFoundError } => NotFound(ErrorResponses.UserNotFoundError),
             _ => throw new UnhandledResultErrorException(),
@@ -146,7 +146,7 @@ public sealed class UsersController(
 
         return result switch
         {
-            { HasError: false } => Ok(result.Data!.ToPublicModel()),
+            { HasError: false } => Ok(result.Data.ToPublicModel()),
             { HasError: true, Error: OrgNotFoundError } => NotFound(ErrorResponses.OrgNotFoundError),
             { HasError: true, Error: UserNotFoundError } => NotFound(ErrorResponses.UserNotFoundError),
             _ => throw new UnhandledResultErrorException(),
@@ -170,7 +170,7 @@ public sealed class UsersController(
 
         return result switch
         {
-            { HasError: false } => Ok(result.Data!.ToPublicModel()),
+            { HasError: false } => Ok(result.Data.ToPublicModel()),
             { HasError: true, Error: OrgNotFoundError } => NotFound(ErrorResponses.OrgNotFoundError),
             { HasError: true, Error: UserNotFoundError } => NotFound(ErrorResponses.UserNotFoundError),
             _ => throw new UnhandledResultErrorException(),
@@ -194,7 +194,7 @@ public sealed class UsersController(
 
         return result switch
         {
-            { HasError: false } => Ok(result.Data!.ToPublicModel()),
+            { HasError: false } => Ok(result.Data.ToPublicModel()),
             { HasError: true, Error: OrgNotFoundError } => NotFound(ErrorResponses.OrgNotFoundError),
             { HasError: true, Error: UserNotFoundError } => NotFound(ErrorResponses.UserNotFoundError),
             _ => throw new UnhandledResultErrorException(),

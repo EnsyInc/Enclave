@@ -36,6 +36,7 @@ catch (Exception ex)
     LogManager.Flush();
     LogManager.Shutdown();
     Environment.Exit(1);
+    throw;
 }
 
 LogManager.Flush();

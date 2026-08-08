@@ -22,9 +22,6 @@ internal sealed class OrgsService(IOrgRepo orgRepo) : IOrgsService
 
     public async Task<Result<IEnumerable<Org>>> ListOrgsByName(string name, CancellationToken ct)
     {
-        // string.Contains(string, StringComparison) can't be translated by EF Core to SQL Server;
-        // plain Contains() translates to LIKE and is already case-insensitive under SQL Server's
-        // default (case-insensitive) collation.
         var result = await orgRepo.GetManyByExpression(o => o.Name.Contains(name), ct);
         return result.HasError
             ? Result.FromError<IEnumerable<Org>>(new UnexpectedError())
