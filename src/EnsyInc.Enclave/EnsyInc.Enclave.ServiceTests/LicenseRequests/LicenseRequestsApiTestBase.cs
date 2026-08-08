@@ -41,6 +41,8 @@ public abstract class LicenseRequestsApiTestBase(ApiFixture fixture) : IAsyncDis
         {
             await Fixture.Client.DeleteAsync($"/orgs/{id}", ct);
         }
+
+        GC.SuppressFinalize(this);
     }
 
     protected async Task<Guid> CreateOrg(CancellationToken ct)

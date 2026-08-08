@@ -20,6 +20,8 @@ public abstract class OrgsApiTestBase(ApiFixture fixture) : IAsyncDisposable
         {
             await Fixture.Client.DeleteAsync($"/orgs/{id}", ct);
         }
+
+        GC.SuppressFinalize(this);
     }
 
     protected async Task<GetOrgResponse> CreateOrg(string name, CancellationToken ct)

@@ -20,6 +20,8 @@ public abstract class ProductsApiTestBase(ApiFixture fixture) : IAsyncDisposable
         {
             await Fixture.Client.DeleteAsync($"/products/{id}", ct);
         }
+
+        GC.SuppressFinalize(this);
     }
 
     protected async Task<GetProductResponse> CreateProduct(string name, ProductStatus status, CancellationToken ct)
