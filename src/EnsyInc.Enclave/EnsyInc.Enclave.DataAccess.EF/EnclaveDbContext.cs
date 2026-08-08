@@ -7,7 +7,6 @@ namespace EnsyInc.Enclave.DataAccess.EF;
 
 public sealed class EnclaveDbContext : DbContext
 {
-    public DbSet<DbApp> Apps { get; init; }
     public DbSet<LicenseEntity> Licenses { get; init; }
     public DbSet<LicenseRequestEntity> LicenseRequests { get; init; }
     public DbSet<OrgEntity> Orgs { get; init; }
@@ -20,7 +19,6 @@ public sealed class EnclaveDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<DbApp>().Configure();
         modelBuilder.Entity<LicenseEntity>().Configure();
         modelBuilder.Entity<LicenseRequestEntity>().Configure();
         modelBuilder.Entity<OrgEntity>().Configure();

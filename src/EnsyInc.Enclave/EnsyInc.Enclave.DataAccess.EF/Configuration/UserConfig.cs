@@ -33,5 +33,9 @@ internal static class UserConfig
             .WithMany()
             .HasForeignKey(e => e.OrgId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasIndex(e => e.Email)
+            .IsUnique()
+            .HasFilter("[DeletedAt] IS NULL");
     }
 }

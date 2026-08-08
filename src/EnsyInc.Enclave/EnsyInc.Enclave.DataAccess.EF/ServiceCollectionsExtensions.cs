@@ -25,7 +25,6 @@ public static class ServiceCollectionsExtensions
 
     private static IServiceCollection AddRepos(this IServiceCollection services)
         => services
-            .AddScoped<IAppRepository, AppRepository>()
             .AddScoped<ILicenseRepo, LicenseRepo>()
             .AddScoped<ILicenseRequestRepo, LicenseRequestRepo>()
             .AddScoped<IOrgRepo, OrgRepo>()

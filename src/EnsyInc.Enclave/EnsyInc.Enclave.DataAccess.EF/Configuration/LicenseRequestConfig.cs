@@ -42,5 +42,8 @@ internal static class LicenseRequestConfig
             .WithMany()
             .HasForeignKey(e => e.ExistingLicenseId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasIndex(e => e.Status)
+            .HasFilter("[DeletedAt] IS NULL");
     }
 }

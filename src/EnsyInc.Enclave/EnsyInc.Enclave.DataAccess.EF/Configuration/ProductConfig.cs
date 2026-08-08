@@ -2,6 +2,7 @@ using EnsyInc.Enclave.DataAccess.Models;
 
 using EnsyNet.DataAccess.EntityFramework.Configuration;
 
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace EnsyInc.Enclave.DataAccess.EF.Configuration;
@@ -22,5 +23,9 @@ internal static class ProductConfig
         builder.Property(e => e.Status)
             .HasConversion<string>()
             .HasMaxLength(32);
+
+        builder.HasIndex(e => e.Name)
+            .IsUnique()
+            .HasFilter("[DeletedAt] IS NULL");
     }
 }
