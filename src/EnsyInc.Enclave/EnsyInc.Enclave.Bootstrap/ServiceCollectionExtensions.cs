@@ -1,20 +1,25 @@
-﻿using NLog;
-using NLog.Extensions.Logging;
-
-using System.Reflection;
+﻿using System.Reflection;
 
 using EnsyInc.Enclave.DataAccess.EF;
 
-namespace EnsyInc.Enclave.Api;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
-internal static class BootloaderExtensions
+using NLog;
+using NLog.Extensions.Logging;
+
+namespace EnsyInc.Enclave.Bootstrap;
+
+public static class ServiceCollectionExtensions
 {
     public static WebApplicationBuilder InitializeApplication(this WebApplicationBuilder builder)
     {
         builder.Configuration.InitializeConfiguration(builder.Environment.EnvironmentName);
         builder.Logging.ConfigureLogging();
         builder.Services.AddServices(builder.Configuration);
-        
+
         return builder;
     }
 
@@ -52,7 +57,7 @@ internal static class BootloaderExtensions
             {
                 var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 opt.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
-            });   
+            });
     }
 
     public static WebApplication ConfigureApplication(this WebApplication app)
