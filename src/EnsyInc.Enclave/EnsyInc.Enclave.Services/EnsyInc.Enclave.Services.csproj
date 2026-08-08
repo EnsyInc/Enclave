@@ -6,5 +6,8 @@
     <ProjectReference Include="..\EnsyInc.Enclave.Core\EnsyInc.Enclave.Core.csproj" />
     <ProjectReference Include="..\EnsyInc.Enclave.DataAccess\EnsyInc.Enclave.DataAccess.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="EnsyInc.Enclave.UnitTests" />
+  </ItemGroup>
 
 </Project>
