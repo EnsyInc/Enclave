@@ -109,7 +109,7 @@ jobs:
         run: |
           mkdir -p ./test-results
           cd src/EnsyInc.Enclave/EnsyInc.Enclave.Api/bin/Release/net10.0
-          nohup dotnet-coverage collect -f xml -o "$GITHUB_WORKSPACE/test-results/service-coverage.xml" -- \
+          nohup dotnet-coverage collect --session-id ServiceTestsSession -f xml -o "$GITHUB_WORKSPACE/test-results/service-coverage.xml" -- \
             dotnet EnsyInc.Enclave.Api.dll > "$GITHUB_WORKSPACE/api.log" 2>&1 &
           echo $! > "$GITHUB_WORKSPACE/api.pid"
 
@@ -132,14 +132,18 @@ jobs:
 
       - name: Stop Api and flush coverage
         run: |
-          kill -SIGINT "$(cat api.pid)"
+          dotnet-coverage shutdown ServiceTestsSession
           for i in $(seq 1 30); do
-            if [ -f ./test-results/service-coverage.xml ]; then
-              echo "Coverage report written"
-              exit 0
+            if ! kill -0 "$(cat api.pid)" 2>/dev/null; then
+              break
             fi
+            echo "Waiting for coverage session to close... ($i/30)"
             sleep 1
           done
+          if [ -f ./test-results/service-coverage.xml ]; then
+            echo "Coverage report written"
+            exit 0
+          fi
           echo "Coverage report was not written in time"
           cat api.log || true
           exit 1
