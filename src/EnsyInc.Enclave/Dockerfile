@@ -36,4 +36,5 @@ ENTRYPOINT ["dotnet", "EnsyInc.Enclave.Api.dll"]
 FROM mcr.microsoft.com/dotnet/runtime:10.0 AS migrations
 WORKDIR /app
 COPY --from=publish-migrations /app/publish .
+USER $APP_UID
 ENTRYPOINT ["dotnet", "EnsyInc.Enclave.Migrations.dll"]

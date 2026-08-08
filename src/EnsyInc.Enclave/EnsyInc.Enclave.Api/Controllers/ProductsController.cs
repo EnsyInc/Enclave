@@ -1,3 +1,4 @@
+using EnsyInc.Enclave.Api.Exceptions;
 using EnsyInc.Enclave.Api.Models;
 using EnsyInc.Enclave.Api.Models.Mappers;
 using EnsyInc.Enclave.Core.Errors;
@@ -36,7 +37,7 @@ public sealed class ProductsController(
         return result switch
         {
             { HasError: false } => Ok(new GetProductsResponse(result.Data.Select(x => x.ToPublicModel()))),
-            _ => throw new("Unexpected error occurred."),
+            _ => throw new UnhandledResultErrorException(),
         };
     }
 
@@ -58,7 +59,7 @@ public sealed class ProductsController(
         {
             { HasError: false } => Ok(result.Data!.ToPublicModel()),
             { HasError: true, Error: ProductNotFoundError } => NotFound(ErrorResponses.ProductNotFoundError),
-            _ => throw new("Unexpected error occurred."),
+            _ => throw new UnhandledResultErrorException(),
         };
     }
 
@@ -85,7 +86,7 @@ public sealed class ProductsController(
         {
             { HasError: false } => CreatedAtAction(nameof(GetProduct), new { id = result.Data!.Id }, result.Data!.ToPublicModel()),
             { HasError: true, Error: ProductNotFoundError } => NotFound(ErrorResponses.ProductNotFoundError),
-            _ => throw new("Unexpected error occurred."),
+            _ => throw new UnhandledResultErrorException(),
         };
     }
 
@@ -113,7 +114,7 @@ public sealed class ProductsController(
         {
             { HasError: false } => Ok(result.Data!.ToPublicModel()),
             { HasError: true, Error: ProductNotFoundError } => NotFound(ErrorResponses.ProductNotFoundError),
-            _ => throw new("Unexpected error occurred."),
+            _ => throw new UnhandledResultErrorException(),
         };
     }
 
@@ -135,7 +136,7 @@ public sealed class ProductsController(
         {
             { HasError: false } => Ok(result.Data!.ToPublicModel()),
             { HasError: true, Error: ProductNotFoundError } => NotFound(ErrorResponses.ProductNotFoundError),
-            _ => throw new("Unexpected error occurred."),
+            _ => throw new UnhandledResultErrorException(),
         };
     }
 
@@ -154,7 +155,7 @@ public sealed class ProductsController(
         return result switch
         {
             { HasError: false } => NoContent(),
-            _ => throw new("Unexpected error occurred."),
+            _ => throw new UnhandledResultErrorException(),
         };
     }
 }

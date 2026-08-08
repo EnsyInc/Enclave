@@ -96,8 +96,22 @@ jobs:
       - name: Apply database migrations
         run: dotnet run --project src/EnsyInc.Enclave/EnsyInc.Enclave.Migrations/EnsyInc.Enclave.Migrations.csproj -c Release
 
-      - name: Start Api in background
-        run: nohup dotnet run --project src/EnsyInc.Enclave/EnsyInc.Enclave.Api/EnsyInc.Enclave.Api.csproj -c Release > api.log 2>&1 &
+      - name: Install dotnet-coverage
+        run: dotnet tool install --global dotnet-coverage
+
+      - name: Build Api
+        run: dotnet build src/EnsyInc.Enclave/EnsyInc.Enclave.Api/EnsyInc.Enclave.Api.csproj -c Release
+
+      - name: Start Api in background with coverage collection
+        env:
+          ASPNETCORE_ENVIRONMENT: Development
+          ASPNETCORE_URLS: "https://localhost:7150;http://localhost:5243"
+        run: |
+          mkdir -p ./test-results
+          cd src/EnsyInc.Enclave/EnsyInc.Enclave.Api/bin/Release/net10.0
+          nohup dotnet-coverage collect --session-id ServiceTestsSession -f xml -o "$GITHUB_WORKSPACE/test-results/service-coverage.xml" -- \
+            dotnet EnsyInc.Enclave.Api.dll > "$GITHUB_WORKSPACE/api.log" 2>&1 &
+          echo $! > "$GITHUB_WORKSPACE/api.pid"
 
       - name: Wait for Api to be ready
         run: |
@@ -113,14 +127,26 @@ jobs:
           cat api.log || true
           exit 1
 
-      - name: Install dotnet-coverage
-        run: dotnet tool install --global dotnet-coverage
+      - name: Run service tests
+        run: dotnet test src/EnsyInc.Enclave/EnsyInc.Enclave.ServiceTests/EnsyInc.Enclave.ServiceTests.csproj -c Release
 
-      - name: Run service tests with coverage
+      - name: Stop Api and flush coverage
         run: |
-          mkdir -p ./test-results
-          dotnet-coverage collect -f xml -o ./test-results/service-coverage.xml -- \
-            dotnet test src/EnsyInc.Enclave/EnsyInc.Enclave.ServiceTests/EnsyInc.Enclave.ServiceTests.csproj -c Release
+          dotnet-coverage shutdown ServiceTestsSession
+          for i in $(seq 1 30); do
+            if ! kill -0 "$(cat api.pid)" 2>/dev/null; then
+              break
+            fi
+            echo "Waiting for coverage session to close... ($i/30)"
+            sleep 1
+          done
+          if [ -f ./test-results/service-coverage.xml ]; then
+            echo "Coverage report written"
+            exit 0
+          fi
+          echo "Coverage report was not written in time"
+          cat api.log || true
+          exit 1
 
       - name: Upload service test coverage
         uses: actions/upload-artifact@v4
@@ -178,7 +204,7 @@ jobs:
           -d:sonar.token="$SONAR_TOKEN"
           -d:sonar.cs.vscoveragexml.reportsPaths="./test-results/unit-coverage.xml,./test-results/service-coverage.xml"
           -d:sonar.coverage.exclusions="**/*Tests*/**"
-          -d:sonar.exclusions="**/*.slnx,**/Migrations/*.Designer.cs,**/Migrations/*ModelSnapshot.cs"
+          -d:sonar.exclusions="**/*.slnx,**/Migrations/*.cs,.github/**"
 
       - name: Build solution
         run: dotnet build "$SLN_PATH" -c Release

@@ -1,3 +1,4 @@
+using EnsyInc.Enclave.Api.Exceptions;
 using EnsyInc.Enclave.Api.Models;
 
 using FluentValidation;
@@ -24,7 +25,14 @@ internal sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> log
             return true;
         }
 
-        logger.LogError(exception, "Unhandled exception while processing {Method} {Path}.", httpContext.Request.Method, httpContext.Request.Path);
+        if (exception is UnhandledResultErrorException)
+        {
+            logger.LogError(exception, "Controller reached an unhandled result error case while processing {Method} {Path}.", httpContext.Request.Method, httpContext.Request.Path);
+        }
+        else
+        {
+            logger.LogError(exception, "Unhandled exception while processing {Method} {Path}.", httpContext.Request.Method, httpContext.Request.Path);
+        }
 
         httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
         await httpContext.Response.WriteAsJsonAsync(ErrorResponses.UnexpectedError, ct);
