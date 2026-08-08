@@ -99,12 +99,19 @@ jobs:
       - name: Install dotnet-coverage
         run: dotnet tool install --global dotnet-coverage
 
+      - name: Build Api
+        run: dotnet build src/EnsyInc.Enclave/EnsyInc.Enclave.Api/EnsyInc.Enclave.Api.csproj -c Release
+
       - name: Start Api in background with coverage collection
+        env:
+          ASPNETCORE_ENVIRONMENT: Development
+          ASPNETCORE_URLS: "https://localhost:7150;http://localhost:5243"
         run: |
           mkdir -p ./test-results
-          nohup dotnet-coverage collect -f xml -o ./test-results/service-coverage.xml -- \
-            dotnet run --project src/EnsyInc.Enclave/EnsyInc.Enclave.Api/EnsyInc.Enclave.Api.csproj -c Release > api.log 2>&1 &
-          echo $! > api.pid
+          cd src/EnsyInc.Enclave/EnsyInc.Enclave.Api/bin/Release/net10.0
+          nohup dotnet-coverage collect -f xml -o "$GITHUB_WORKSPACE/test-results/service-coverage.xml" -- \
+            dotnet EnsyInc.Enclave.Api.dll > "$GITHUB_WORKSPACE/api.log" 2>&1 &
+          echo $! > "$GITHUB_WORKSPACE/api.pid"
 
       - name: Wait for Api to be ready
         run: |
