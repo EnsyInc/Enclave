@@ -93,11 +93,21 @@ jobs:
           cache: true
           cache-dependency-path: ${{ env.PACKAGES_PROPS_PATH }}
 
-      - name: Apply database migrations
-        run: dotnet run --project src/EnsyInc.Enclave/EnsyInc.Enclave.Migrations/EnsyInc.Enclave.Migrations.csproj -c Release
-
       - name: Install dotnet-coverage
         run: dotnet tool install --global dotnet-coverage
+
+      - name: Apply database migrations with coverage collection
+        run: |
+          mkdir -p ./test-results
+          dotnet-coverage collect -f xml -o ./test-results/migrations-coverage.xml -- \
+            dotnet run --project src/EnsyInc.Enclave/EnsyInc.Enclave.Migrations/EnsyInc.Enclave.Migrations.csproj -c Release
+
+      - name: Upload migrations coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-migrations
+          path: ./test-results/migrations-coverage.xml
+          retention-days: 1
 
       - name: Build Api
         run: dotnet build src/EnsyInc.Enclave/EnsyInc.Enclave.Api/EnsyInc.Enclave.Api.csproj -c Release
@@ -191,6 +201,12 @@ jobs:
           name: coverage-service
           path: ./test-results
 
+      - name: Download migrations coverage
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-migrations
+          path: ./test-results
+
       - name: Install dotnet-sonarscanner
         run: dotnet tool install --global dotnet-sonarscanner
 
@@ -202,7 +218,7 @@ jobs:
           -n:"Enclave"
           -d:sonar.host.url="https://sonarcloud.io"
           -d:sonar.token="$SONAR_TOKEN"
-          -d:sonar.cs.vscoveragexml.reportsPaths="./test-results/unit-coverage.xml,./test-results/service-coverage.xml"
+          -d:sonar.cs.vscoveragexml.reportsPaths="./test-results/unit-coverage.xml,./test-results/service-coverage.xml,./test-results/migrations-coverage.xml"
           -d:sonar.coverage.exclusions="**/*Tests*/**"
           -d:sonar.exclusions="**/*.slnx,**/Migrations/*.cs,.github/**"
 
