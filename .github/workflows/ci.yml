@@ -56,7 +56,7 @@ jobs:
             dotnet test src/EnsyInc.Enclave/EnsyInc.Enclave.UnitTests/EnsyInc.Enclave.UnitTests.csproj -c Release
 
       - name: Upload unit test coverage
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: coverage-unit
           path: ./test-results/unit-coverage.xml
@@ -103,7 +103,7 @@ jobs:
             dotnet run --project src/EnsyInc.Enclave/EnsyInc.Enclave.Migrations/EnsyInc.Enclave.Migrations.csproj -c Release
 
       - name: Upload migrations coverage
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: coverage-migrations
           path: ./test-results/migrations-coverage.xml
@@ -159,7 +159,7 @@ jobs:
           exit 1
 
       - name: Upload service test coverage
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: coverage-service
           path: ./test-results/service-coverage.xml
@@ -190,19 +190,19 @@ jobs:
           java-version: "17.0"
 
       - name: Download unit test coverage
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: coverage-unit
           path: ./test-results
 
       - name: Download service test coverage
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: coverage-service
           path: ./test-results
 
       - name: Download migrations coverage
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: coverage-migrations
           path: ./test-results

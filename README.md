@@ -2,11 +2,11 @@
 
 [![Quality gate status](https://sonarcloud.io/api/project_badges/measure?project=EnsyInc_Enclave&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=EnsyInc_Enclave)
 
-Backend for the **Licensing** service of EnsyInc's Licensing + Monitoring platform: a backoffice for granting, tracking, and renewing product licenses per customer organization. It's one of two deliberately separate services (the other being Monitoring) that share the concept of a Product but are isolated from each other so an incident in one doesn't take down the other. See [docs/00_overview.md](docs/00_overview.md) for the full platform rationale and [docs/licensing-service.md](docs/licensing-service.md) for the domain requirements.
+Backend for the **Licensing** service of EnsyInc's Licensing + Monitoring platform: a backoffice for granting, tracking, and renewing product licenses per customer organization. It's one of two deliberately separate services (the other being Monitoring) that share the concept of a Product but are isolated from each other so an incident in one doesn't take down the other. See [docs/00_overview.md](docs/00_overview.md) for the full platform rationale, [docs/licensing-service.md](docs/licensing-service.md) for the domain requirements, [docs/features.md](docs/features.md) for the feature/endpoint inventory, and [docs/models.md](docs/models.md) for entity and state diagrams. The frontend lives in [EnsyInc/Enclave.Web](https://github.com/EnsyInc/Enclave.Web).
 
 ## Status
 
-Early stage. The `Product` entity and its admin CRUD endpoints (`/products`) are implemented end-to-end (API, service, EF Core repository, migrations). `Org`, `User`, `License`, and `License Request` are designed (see the docs above) but not yet built.
+Licensing is implemented end-to-end: `Product`, `Org`, `User`, `License`, and `License Request` all exist as domain models, EF Core entities/migrations, repositories, services, and API controllers (see [docs/features.md](docs/features.md)). `Monitoring` is designed (see the docs above) but not yet built.
 
 ## Architecture
 

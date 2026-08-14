@@ -7,11 +7,7 @@ A platform to support a portfolio of future products/services:
 1. **Licensing** — grant, track, and renew licenses for products, per customer organization.
 2. **Monitoring** — track the health/status of those products and communicate incidents to customers via a status page.
 
-Full requirements: [licensing-service.md](./licensing-service.md), [monitoring-service.md](./monitoring-service.md).
-
-Screens & flows for UI/UX handoff: [UiUx/licensing-screens.md](./UiUx/licensing-screens.md), [UiUx/monitoring-screens.md](./UiUx/monitoring-screens.md).
-
-Logo, color palette, and theming requirements: [UiUx/branding.md](./UiUx/branding.md).
+Full requirements: [licensing-service.md](./licensing-service.md), [monitoring-service.md](./monitoring-service.md). Feature/endpoint inventory: [features.md](./features.md). Entity and state diagrams: [models.md](./models.md).
 
 ## Two services, not one
 
@@ -38,4 +34,4 @@ These were raised and consciously scoped out, not forgotten:
 
 ## Status
 
-Requirements only — no application code exists for this design yet. The current `EnsyInc.Enclave` codebase (`src/`) is an unrelated bare skeleton (single `App` entity, stub CRUD routes) that will be superseded, not extended, by this design. Frontend design is a follow-up conversation.
+Licensing is implemented end-to-end against this design: `Product`, `Org`, `User`, `License`, and `License Request` all exist as domain models, EF Core entities/migrations, repositories, services, and API controllers (see [features.md](./features.md) for the endpoint list, [models.md](./models.md) for entity/state diagrams). Monitoring is still requirements-only — no Monitoring code exists yet. Frontend design lives in a separate repo, [EnsyInc/Enclave.Web](https://github.com/EnsyInc/Enclave.Web).
