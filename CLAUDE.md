@@ -1,6 +1,6 @@
 # EnsyInc.Enclave
 
-Backend for the Licensing service of EnsyInc's Licensing + Monitoring platform. See [README.md](README.md) for the project overview and [docs/00_overview.md](docs/00_overview.md) / [docs/licensing-service.md](docs/licensing-service.md) for domain requirements. Only the `Product` entity (`/products` CRUD) is implemented so far; `Org`, `User`, `License`, `License Request` are designed but not built.
+Backend for the Licensing service of EnsyInc's Licensing + Monitoring platform. See [README.md](README.md) for the project overview, [docs/00_overview.md](docs/00_overview.md) / [docs/licensing-service.md](docs/licensing-service.md) for domain requirements, [docs/features.md](docs/features.md) for the feature/endpoint inventory, and [docs/models.md](docs/models.md) for entity/state diagrams. `Product`, `Org`, `User`, `License`, and `License Request` are all implemented end-to-end (CRUD/action endpoints, EF Core entities, migrations); `Monitoring` is designed but not built.
 
 ## Solution layout
 
