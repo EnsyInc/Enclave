@@ -2,7 +2,7 @@
 
 [![Quality gate status](https://sonarcloud.io/api/project_badges/measure?project=EnsyInc_Enclave&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=EnsyInc_Enclave)
 
-Backend for the **Licensing** service of EnsyInc's Licensing + Monitoring platform: a backoffice for granting, tracking, and renewing product licenses per customer organization. It's one of two deliberately separate services (the other being Monitoring) that share the concept of a Product but are isolated from each other so an incident in one doesn't take down the other. See [docs/00_overview.md](docs/00_overview.md) for the full platform rationale and [docs/licensing-service.md](docs/licensing-service.md) for the domain requirements.
+Backend for the **Licensing** service of EnsyInc's Licensing + Monitoring platform: a backoffice for granting, tracking, and renewing product licenses per customer organization. It's one of two deliberately separate services (the other being Monitoring) that share the concept of a Product but are isolated from each other so an incident in one doesn't take down the other. See [docs/00_overview.md](docs/00_overview.md) for the full platform rationale and [docs/licensing-service.md](docs/licensing-service.md) for the domain requirements. The frontend lives in [EnsyInc/Enclave.Web](https://github.com/EnsyInc/Enclave.Web).
 
 ## Status
 

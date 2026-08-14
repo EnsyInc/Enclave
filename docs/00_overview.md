@@ -9,10 +9,6 @@ A platform to support a portfolio of future products/services:
 
 Full requirements: [licensing-service.md](./licensing-service.md), [monitoring-service.md](./monitoring-service.md).
 
-Screens & flows for UI/UX handoff: [UiUx/licensing-screens.md](./UiUx/licensing-screens.md), [UiUx/monitoring-screens.md](./UiUx/monitoring-screens.md).
-
-Logo, color palette, and theming requirements: [UiUx/branding.md](./UiUx/branding.md).
-
 ## Two services, not one
 
 Licensing and Monitoring share the concept of a **Product**, but are deliberately split into two logically separate services (communicating via API, not a shared database):
